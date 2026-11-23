@@ -1,0 +1,38 @@
+﻿# Environment variables and secrets
+.env
+.env.*
+!.env.example
+.workflow-test-tokens.json
+.dataset-export-test-token
+
+# Python environments
+.runtime/
+.venv/
+venv/
+python-runtime.zip
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Test temporary files
+test_tmp/
+.pytest_tmp/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Dataset files (keep directory placeholders)
+dataset/**/*
+!dataset/**/
+!dataset/**/.gitkeep
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
