@@ -61,7 +61,7 @@ Invoke-RestMethod "$base/scoring-standards" -Method Post -Headers $workflowHeade
 $label = @{cow_id=$cow.id;image_cow_id=$association.id;bcs_category='Normal';scoring_standard='SYNTHETIC-DEMO-ONLY';evaluator='Synthetic demonstration';evaluation_method='manual';evaluation_date='2025-01-02T12:00:00Z';review_status='pending';notes='SYNTHETIC TEST ONLY'}
 Invoke-RestMethod "$base/bcs" -Method Post -Headers $workflowHeaders -ContentType 'application/json' -Body ($label | ConvertTo-Json)
 .\.venv\Scripts\python.exe -m scripts.export_dataset --seed 42
-.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m pytest -q --basetemp=.\test_tmp
 ```
 
 Training export writes `dataset/exports/training.csv` plus a manifest. With only the pending demo label, the CSV contains a header only. Do not approve synthetic examples into a real training dataset.
@@ -78,8 +78,8 @@ docker compose logs api
 Default tests use isolated in-memory SQLite databases with foreign keys enabled. They do not establish PostgreSQL compatibility by themselves. To run the same suite against PostgreSQL, create a **dedicated disposable empty test database** first. The fixture creates and drops all application tables there:
 
 ```powershell
-$env:TEST_DATABASE_URL = 'postgresql+psycopg://cowscore:YOUR_URL_ENCODED_PASSWORD@localhost:5432/cowscore_test'
-.\.venv\Scripts\python.exe -m pytest -q
+$env:TEST_DATABASE_URL = 'postgresql+psycopg://cowscore:YOUR_URL_ENCODED_PASSWORD@127.0.0.1:5432/cowscore_test'
+.\.venv\Scripts\python.exe -m pytest -q --basetemp=.\test_tmp
 Remove-Item Env:TEST_DATABASE_URL
 ```
 
